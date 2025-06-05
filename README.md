@@ -1,6 +1,6 @@
 # arch-update-checker
 Bash script for checking updates (including from AUR) that uses Notify-send.
-Works only on Archlinux. Libnotify, wget and pacman-contrib packages are required
+Works only on Archlinux. **libnotify**, **wget** and **pacman-contrib** packages are required
 ```
 Usage: arch-update-checker [FLAG]
  -f            (force) don't test Internet connection
@@ -12,7 +12,7 @@ Usage: arch-update-checker [FLAG]
 
 
 Скрипт для проверки обновлений (в репозиториях и AUR) и вывода с помощью notify-send для Archlinux.
-Для работы нужны пакеты libnotify, wget и pacman-contrib.
+Для работы нужны пакеты **libnotify**, **wget** и **pacman-contrib**.
 ```
 Использование: arch-update-checker [ФЛАГ]
  -f            (force) не проверять интернет-соединение
