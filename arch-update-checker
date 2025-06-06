@@ -74,7 +74,7 @@ if [[ "$1" == "-h" ]]; then
 	echo "${SCRIPT_LANG[17]}"
 elif [[ "$1" == "-v" ]]; then
 	INFO_FLAG=true
-        echo "arch-update-checker 0.5.0"
+        echo "arch-update-checker 0.5.1.1"
 fi
 
 while getopts 'fnhvs:' FLAGS; do
