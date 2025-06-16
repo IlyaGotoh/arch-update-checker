@@ -19,14 +19,14 @@ copy_root(){
 	echo ""
 
 	echo -e "${BLUE}${SCRIPT_LANG[0]}${NOCOLOR}"
-	cp -f ./arch-update-checker /usr/local/bin/arch-update-checker && echo -e "${GREEN}${SCRIPT_LANG[1]}${NOCOLOR}"
+	cp -f ./arch-update-checker /usr/local/bin/arch-update-checker && chmod +x /usr/local/bin/arch-update-checker && echo -e "${GREEN}${SCRIPT_LANG[1]}${NOCOLOR}"
 	echo -e "${GREEN}${SCRIPT_LANG[2]}\n${NOCOLOR}"
 }
 
 copy(){
 	echo ""
 	echo -e "${BLUE}${SCRIPT_LANG[0]}${NOCOLOR}"
-	sudo cp -f ./arch-update-checker /usr/local/bin/arch-update-checker && echo -e "${GREEN}${SCRIPT_LANG[1]}${NOCOLOR}"
+	sudo cp -f ./arch-update-checker /usr/local/bin/arch-update-checker && sudo chmod +x /usr/local/bin/arch-update-checker && echo -e "${GREEN}${SCRIPT_LANG[1]}${NOCOLOR}"
 	echo -e "${GREEN}${SCRIPT_LANG[2]}\n${NOCOLOR}"
 }
 
