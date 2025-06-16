@@ -49,7 +49,7 @@ notify_upd() {
 
 check_upd() {
 	if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -w -t 3000 -i mintupdate-checking "${SCRIPT_LANG[8]}..." 2> /dev/null; fi
-	LIST="$(checkupdates --nocolor ; pacman -Qm | aur vercmp)"
+	LIST="$(checkupdates --nocolor && pacman -Qm | aur vercmp)"
 	UPD_COUNT="$(echo -e "$LIST" | wc -l)"; if [[ "$LIST" == "" ]]; then UPD_COUNT=0; fi
 	if (( "$UPD_COUNT" > "$NOTIF_MAX_LINES" )); then LIST="$(echo "$LIST" | head -n "$NOTIF_MAX_LINES"; echo "(${SCRIPT_LANG[9]} $NOTIF_MAX_LINES ${SCRIPT_LANG[10]} $UPD_COUNT...)")"; fi
 
