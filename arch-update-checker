@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-LANG_EN=([0]="Error" [1]="No Internet connection" [2]="update(s)" [3]="update(s)" [4]="update(s)" [5]="System is upgraded" [6]="All packages are up-to-date" [7]="Available" [8]="Checking for updates" [9]="Showed" [10]="out of" [11]="Failed to get updates info" [12]="usage: arch-update-checker [FLAG]" [13]="  -f            (force) don't test Internet connection" [14]="  -s [VALUE]    (strings) maximum strings in notification (30 by default)" [15]="  -n            don't show notifications (terminal only)" [16]="  -h            show this help" [17]="  -v            show program version")
+LANG_EN=([0]="Error" [1]="No Internet connection" [2]="Updates" [3]="Updates in AUR" [4]="System is upgraded" [5]="All packages are up-to-date" [6]="Checking for updates" [7]="Showed" [8]="out of" [9]="Failed to get updates info" [10]="usage: arch-update-checker [FLAG]" [11]="  -f            (force) don't test Internet connection" [12]="  -s [VALUE]    (strings) maximum strings in notification (30 by default)" [13]="  -n            don't show notifications (terminal only)" [14]="  -h            show this help" [15]="  -v            show program version")
 
-LANG_RU=([0]="Ошибка проверки" [1]="Компьютер не подключен к сети" [2]="обновлений" [3]="обновление" [4]="обновления" [5]="Система обновлена" [6]="Все пакеты имеют последние версии" [7]="Доступно" [8]="Проверка обновлений" [9]="Показано" [10]="из" [11]="Не удаётся получить обновления" [12]="использование: arch-update-checker [ФЛАГ]" [13]="  -f            (force) не проверять интернет-соединение" [14]="  -s [ЧИСЛО]    (strings) максимальное количество строк уведомления (по умолчанию - 30)" [15]="  -n            не показывать уведомления (вывод в терминал)" [16]="  -h            показать эту справку" [17]="  -v            показать номер версии программы")
+LANG_RU=([0]="Ошибка проверки" [1]="Компьютер не подключен к сети" [2]="Обновления" [3]="Обновления в AUR" [4]="Система обновлена" [5]="Все пакеты имеют последние версии" [6]="Проверка обновлений" [7]="Показано" [8]="из" [9]="Не удаётся получить обновления" [10]="использование: arch-update-checker [ФЛАГ]" [11]="  -f            (force) не проверять интернет-соединение" [12]="  -s [ЧИСЛО]    (strings) максимальное количество строк уведомления (по умолчанию - 30)" [13]="  -n            не показывать уведомления (вывод в терминал)" [14]="  -h            показать эту справку" [15]="  -v            показать номер версии программы")
 SCRIPT_LANG=("${LANG_EN[@]}")
 
 if [[ "$(echo $LANG | grep --color=never ru_)" == "" ]]; then
@@ -11,6 +11,11 @@ if [[ "$(echo $LANG | grep --color=never ru_)" == "" ]]; then
 else
 	SCRIPT_LANG=("${LANG_RU[@]}")
 fi
+
+AVAILABLE_ICON="mintupdate-updates-available"
+CHECKING_ICON="mintupdate-checking"
+UPTODATE_ICON="mintupdate-up-to-date"
+ERROR_ICON="mintupdate-error"
 
 NOTIF_MAX_LINES=30
 NO_CONNECTION_TEST=false
@@ -21,60 +26,60 @@ test_inet() {
         wget -q --spider https://archlinux.org
         if ! [[ "$?" == "0" ]]; then
 		echo "${SCRIPT_LANG[0]}: ${SCRIPT_LANG[1]}"
-		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -t 4000 -i mintupdate-error "${SCRIPT_LANG[0]}" "${SCRIPT_LANG[1]}"; fi
+		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -t 4000 -i $ERROR_ICON "${SCRIPT_LANG[0]}" "${SCRIPT_LANG[1]}"; fi
 		exit 1
         fi
 }
 
 notify_upd() {
-	UPD_WORD="${SCRIPT_LANG[2]}"
-	if [[ "$(expr $UPD_COUNT % 10)" == "0" ]]; then
-		UPD_WORD="${SCRIPT_LANG[2]}"
-	elif [[ "$(expr "$(echo ""$UPD_COUNT" > 10" | bc)" + "$(echo ""$UPD_COUNT" < 20" | bc)")" == "2" ]]; then
-		UPD_WORD="${SCRIPT_LANG[2]}"
-	elif [[ "$(expr $UPD_COUNT % 10)" == "1" ]]; then
-		UPD_WORD="${SCRIPT_LANG[3]}"
-	elif [[ "$(expr $UPD_COUNT % 10)" == "2" ]] || [[ "$(expr $UPD_COUNT % 10)" == "3" ]] || [[ "$(expr $UPD_COUNT % 10)" == "4" ]]; then
-		UPD_WORD="${SCRIPT_LANG[4]}"
-	elif [[ "$(expr $UPD_COUNT % 10)" == "5" ]] || [[ "$(expr $UPD_COUNT % 10)" == "6" ]] || [[ "$(expr $UPD_COUNT % 10)" == "7" ]] || [[ "$(expr $UPD_COUNT % 10)" == "8" ]] || [[ "$(expr $UPD_COUNT % 10)" == "9" ]]; then
-		UPD_WORD="${SCRIPT_LANG[2]}"
-	fi
-
-	if [[ "$LIST" == "" ]]; then
-		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -t 8000 -i mintupdate-up-to-date "${SCRIPT_LANG[5]}" "${SCRIPT_LANG[6]}"; fi
+	if [[ "$LIST" == "" ]] && [[ "$LIST_AUR" == "" ]]; then
+		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -t 8000 -i $UPTODATE_ICON "${SCRIPT_LANG[4]}" "${SCRIPT_LANG[5]}"; fi
+	elif [[ "$LIST_AUR" == "" ]] && ! [[ "$LIST" == "" ]]; then
+		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -u critical -i $AVAILABLE_ICON "${SCRIPT_LANG[2]}: $UPD_COUNT" "$LIST"; fi
+	elif [[ "$LIST" == "" ]] && ! [[ "$LIST_AUR" == "" ]]; then
+		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -u critical -i $AVAILABLE_ICON "${SCRIPT_LANG[3]}: $UPD_COUNT_AUR" "$LIST_AUR"; fi
 	else
-		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -u critical -i mintupdate-updates-available "${SCRIPT_LANG[7]} $UPD_COUNT $UPD_WORD" "$LIST"; fi
+		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -u critical -i $AVAILABLE_ICON "${SCRIPT_LANG[2]}: $UPD_COUNT" "$LIST\n\n${SCRIPT_LANG[3]}: $UPD_COUNT_AUR\n$LIST_AUR"; fi 
 	fi
 }
 
 check_upd() {
-	if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -w -t 3000 -i mintupdate-checking "${SCRIPT_LANG[8]}..." 2> /dev/null; fi
-	LIST="$(checkupdates --nocolor && pacman -Qm | aur vercmp)"
+	if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -w -t 3000 -i $CHECKING_ICON "${SCRIPT_LANG[6]}..." 2> /dev/null; fi
+	LIST="$(checkupdates --nocolor)"
+	if  [[ "$?" == "1" ]]; then # checkupdates returns code 2 when no updates available
+		echo "${SCRIPT_LANG[0]}"
+                if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -t 8000 -i $ERROR_ICON "${SCRIPT_LANG[0]}" "${SCRIPT_LANG[9]}"; fi
+                exit 1
+        fi
+	LIST_AUR="$(pacman -Qm | aur vercmp)"
 	UPD_COUNT="$(echo -e "$LIST" | wc -l)"; if [[ "$LIST" == "" ]]; then UPD_COUNT=0; fi
-	if (( "$UPD_COUNT" > "$NOTIF_MAX_LINES" )); then LIST="$(echo "$LIST" | head -n "$NOTIF_MAX_LINES"; echo "(${SCRIPT_LANG[9]} $NOTIF_MAX_LINES ${SCRIPT_LANG[10]} $UPD_COUNT...)")"; fi
+	UPD_COUNT_AUR="$(echo -e "$LIST_AUR" | wc -l)"; if [[ "$LIST_AUR" == "" ]]; then UPD_COUNT_AUR=0; fi
+	if (( "$UPD_COUNT" > "$NOTIF_MAX_LINES" )); then LIST="$(echo "$LIST" | head -n "$NOTIF_MAX_LINES"; echo "(${SCRIPT_LANG[7]} $NOTIF_MAX_LINES ${SCRIPT_LANG[8]} $UPD_COUNT...)")"; fi
+	if (( "$UPD_COUNT_AUR" > "$NOTIF_MAX_LINES" )); then LIST_AUR="$(echo "$LIST_AUR" | head -n "$NOTIF_MAX_LINES"; echo "(${SCRIPT_LANG[7]} $NOTIF_MAX_LINES ${SCRIPT_LANG[8]} $UPD_COUNT_AUR...)")"; fi
+
 
 	if [[ "$?" == "0" ]]; then
-		echo "$LIST"; echo "$UPD_COUNT $UPD_WORD"
+		echo -e "$LIST\n$LIST_AUR"; echo "${SCRIPT_LANG[2]}: $(expr $UPD_COUNT + $UPD_COUNT_AUR)"
 		notify_upd
 	else
 		echo "${SCRIPT_LANG[0]}"
-		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -t 8000 -i mintupdate-error "${SCRIPT_LANG[0]}" "${SCRIPT_LANG[11]}"; fi
+		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -t 8000 -i $ERROR_ICON "${SCRIPT_LANG[0]}" "${SCRIPT_LANG[9]}"; fi
 		exit 1
 	fi
 }
 
 if [[ "$1" == "-h" ]]; then
 	INFO_FLAG=true
-	echo "${SCRIPT_LANG[12]}"
+	echo "${SCRIPT_LANG[10]}"
 	echo ""
+	echo "${SCRIPT_LANG[11]}"
+	echo "${SCRIPT_LANG[12]}"
 	echo "${SCRIPT_LANG[13]}"
 	echo "${SCRIPT_LANG[14]}"
 	echo "${SCRIPT_LANG[15]}"
-	echo "${SCRIPT_LANG[16]}"
-	echo "${SCRIPT_LANG[17]}"
 elif [[ "$1" == "-v" ]]; then
 	INFO_FLAG=true
-        echo "arch-update-checker 0.5.1.1"
+        echo "arch-update-checker 0.5.2"
 fi
 
 while getopts 'fnhvs:' FLAGS; do
