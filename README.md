@@ -1,5 +1,5 @@
 # arch-update-checker
-Bash script for checking updates (including from AUR) that uses Notify-send.
+Bash script for checking updates (including from AUR) that uses **notify-send**.
 Works only on Archlinux. **libnotify**, **wget** and **pacman-contrib** packages are required.
 ```
 Usage: arch-update-checker [FLAG]
@@ -11,7 +11,7 @@ Usage: arch-update-checker [FLAG]
 ```
 
 
-Скрипт для проверки обновлений (в репозиториях и AUR) и вывода с помощью notify-send для Archlinux.
+Скрипт для проверки обновлений (в репозиториях и AUR) и вывода с помощью **notify-send** для Archlinux.
 Для работы нужны пакеты **libnotify**, **wget** и **pacman-contrib**.
 ```
 Использование: arch-update-checker [ФЛАГ]
