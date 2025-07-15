@@ -1,6 +1,6 @@
 # arch-update-checker
 Bash script for checking updates (including from AUR) that uses **notify-send**.
-Works only on Archlinux. **libnotify**, **wget** and **pacman-contrib** packages are required.
+Works only on Archlinux. **libnotify**, **wget** and **pacman-contrib** packages are required for this to work.
 ```
 Usage: arch-update-checker [FLAG]
  -f            (force) don't test Internet connection
