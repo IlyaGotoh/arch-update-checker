@@ -17,13 +17,14 @@ CHECKING_ICON="mintupdate-checking"
 UPTODATE_ICON="mintupdate-up-to-date"
 ERROR_ICON="mintupdate-error"
 
+CONNECTION_TEST_URL="https://archlinux.org"
 NOTIF_MAX_LINES=30
 NO_CONNECTION_TEST=false
 NO_NOTIFY=false
 INFO_FLAG=false
 
 test_inet() {
-        wget -q --spider https://archlinux.org
+        wget -q --spider $CONNECTION_TEST_URL
         if ! [[ "$?" == "0" ]]; then
 		echo "${SCRIPT_LANG[0]}: ${SCRIPT_LANG[1]}"
 		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -t 4000 -i $ERROR_ICON "${SCRIPT_LANG[0]}" "${SCRIPT_LANG[1]}"; fi
@@ -79,7 +80,7 @@ if [[ "$1" == "-h" ]]; then
 	echo "${SCRIPT_LANG[15]}"
 elif [[ "$1" == "-v" ]]; then
 	INFO_FLAG=true
-        echo "arch-update-checker 0.5.2"
+        echo "arch-update-checker 0.5.3"
 fi
 
 while getopts 'fnhvs:' FLAGS; do
