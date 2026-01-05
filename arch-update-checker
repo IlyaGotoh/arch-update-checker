@@ -1,8 +1,21 @@
 #!/usr/bin/env bash
 
-LANG_EN=([0]="Error" [1]="No Internet connection" [2]="Updates" [3]="Updates in AUR" [4]="System is upgraded" [5]="All packages are up-to-date" [6]="Checking for updates" [7]="Showed" [8]="out of" [9]="Failed to get updates info" [10]="usage: arch-update-checker [FLAG]" [11]="  -f            (force) don't test Internet connection" [12]="  -s [VALUE]    (strings) maximum strings in notification (30 by default)" [13]="  -n            don't show notifications (terminal only)" [14]="  -h            show this help" [15]="  -v            show program version")
+LANG_EN=([0]="Error" [1]="No Internet connection" [2]="Updates" [3]="Updates in AUR"\
+ [4]="System is upgraded" [5]="All packages are up-to-date" [6]="Checking for updates"\
+ [7]="Showed" [8]="out of" [9]="Failed to get updates info" [10]="usage: arch-update-checker [FLAG]"\
+ [11]="  -f            (force) don't test Internet connection"\
+ [12]="  -s [VALUE]    (strings) maximum strings in notification (30 by default)"\
+ [13]="  -n            don't show notifications (terminal only)"\
+ [14]="  -h            show this help" [15]="  -v            show program version")
 
-LANG_RU=([0]="Ошибка проверки" [1]="Компьютер не подключен к сети" [2]="Обновления" [3]="Обновления в AUR" [4]="Система обновлена" [5]="Все пакеты имеют последние версии" [6]="Проверка обновлений" [7]="Показано" [8]="из" [9]="Не удаётся получить обновления" [10]="использование: arch-update-checker [ФЛАГ]" [11]="  -f            (force) не проверять интернет-соединение" [12]="  -s [ЧИСЛО]    (strings) максимальное количество строк уведомления (по умолчанию - 30)" [13]="  -n            не показывать уведомления (вывод в терминал)" [14]="  -h            показать эту справку" [15]="  -v            показать номер версии программы")
+LANG_RU=([0]="Ошибка проверки" [1]="Компьютер не подключен к сети" [2]="Обновления"\
+ [3]="Обновления в AUR" [4]="Система обновлена" [5]="Все пакеты имеют последние версии"\
+ [6]="Проверка обновлений" [7]="Показано" [8]="из" [9]="Не удаётся получить обновления"\
+ [10]="использование: arch-update-checker [ФЛАГ]"\
+ [11]="  -f            (force) не проверять интернет-соединение"\
+ [12]="  -s [ЧИСЛО]    (strings) максимальное количество строк уведомления (по умолчанию - 30)"\
+ [13]="  -n            не показывать уведомления (вывод в терминал)"\
+ [14]="  -h            показать эту справку" [15]="  -v            показать номер версии программы")
 SCRIPT_LANG=("${LANG_EN[@]}")
 
 if [[ "$(echo $LANG | grep --color=never ru_)" == "" ]]; then
@@ -17,7 +30,7 @@ CHECKING_ICON="mintupdate-checking"
 UPTODATE_ICON="mintupdate-up-to-date"
 ERROR_ICON="mintupdate-error"
 
-CONNECTION_TEST_URL="https://archlinux.org"
+CONNECTION_TEST_URL="https://www.google.com"
 NOTIF_MAX_LINES=30
 NO_CONNECTION_TEST=false
 NO_NOTIFY=false
@@ -60,7 +73,7 @@ check_upd() {
 
 
 	if [[ "$?" == "0" ]]; then
-		echo -e "$LIST\n$LIST_AUR"; echo "${SCRIPT_LANG[2]}: $(expr $UPD_COUNT + $UPD_COUNT_AUR)"
+		echo -e "${SCRIPT_LANG[2]}: $(expr $UPD_COUNT + $UPD_COUNT_AUR)\n" ; echo -e "$LIST\n$LIST_AUR"
 		notify_upd
 	else
 		echo "${SCRIPT_LANG[0]}"
@@ -69,7 +82,7 @@ check_upd() {
 	fi
 }
 
-if [[ "$1" == "-h" ]]; then
+if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
 	INFO_FLAG=true
 	echo "${SCRIPT_LANG[10]}"
 	echo ""
@@ -80,7 +93,7 @@ if [[ "$1" == "-h" ]]; then
 	echo "${SCRIPT_LANG[15]}"
 elif [[ "$1" == "-v" ]]; then
 	INFO_FLAG=true
-        echo "arch-update-checker 0.5.3"
+        echo "arch-update-checker 0.5.3.2"
 fi
 
 while getopts 'fnhvs:' FLAGS; do
