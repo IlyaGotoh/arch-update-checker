@@ -26,9 +26,9 @@ fi
 
 copy_root(){
 	echo ""
-
 	echo -e "${SCRIPT_LANG[0]}"
 	cp -f ./arch-update-checker /usr/local/bin/arch-update-checker && chmod +x /usr/local/bin/arch-update-checker && echo -e "${GREEN}${SCRIPT_LANG[1]}${NOCOLOR}"
+	chown root:root /usr/local/bin/arch-update-checker
 	echo -e "${GREEN}${SCRIPT_LANG[2]}\n${NOCOLOR}"
 }
 
@@ -36,6 +36,7 @@ copy(){
 	echo ""
 	echo -e "${SCRIPT_LANG[0]}"
 	sudo cp -f ./arch-update-checker /usr/local/bin/arch-update-checker && sudo chmod +x /usr/local/bin/arch-update-checker && echo -e "${GREEN}${SCRIPT_LANG[1]}${NOCOLOR}"
+	sudo chown root:root /usr/local/bin/arch-update-checker
 	echo -e "${GREEN}${SCRIPT_LANG[2]}\n${NOCOLOR}"
 }
 
