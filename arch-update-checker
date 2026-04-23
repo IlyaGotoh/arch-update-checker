@@ -73,7 +73,8 @@ check_upd() {
 
 
 	if [[ "$?" == "0" ]]; then
-		echo -e "${SCRIPT_LANG[2]}: $(expr $UPD_COUNT + $UPD_COUNT_AUR)\n" ; echo -e "$LIST\n$LIST_AUR"
+		echo -e "${SCRIPT_LANG[2]}: $(expr $UPD_COUNT + $UPD_COUNT_AUR)\n" ; echo -e "$LIST"
+		if [[ "$LIST_AUR" != "" ]]; then echo -e "${SCRIPT_LANG[3]}:\n$LIST_AUR"; fi
 		notify_upd
 	else
 		echo "${SCRIPT_LANG[0]}"
@@ -93,7 +94,7 @@ if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
 	echo "${SCRIPT_LANG[15]}"
 elif [[ "$1" == "-v" ]]; then
 	INFO_FLAG=true
-        echo "arch-update-checker 0.5.3.2"
+        echo "arch-update-checker 0.5.3.3"
 fi
 
 while getopts 'fnhvs:' FLAGS; do
