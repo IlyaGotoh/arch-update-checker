@@ -1,4 +1,5 @@
 # arch-update-checker
+
 Bash script for checking updates (including from AUR) that uses **notify-send**.
 Works only with **pacman** package manager. **libnotify**, **wget** and **pacman-contrib** packages are required for this to work.
 ```
@@ -10,6 +11,15 @@ Usage: arch-update-checker [FLAG]
  -v            show program version
 ```
 
+### Installation
+
+Clone repo, install with `install.sh`
+
+**OR**
+
+Get ./archpkg/PKGBUILD, install as package with `makepkg -si`
+
+------------------------------------------------------------------------------------------------------------------------------
 
 Скрипт для проверки обновлений (в репозиториях и AUR) и вывода с помощью **notify-send** для дистрибутивов с **pacman**.
 Для работы нужны пакеты **libnotify**, **wget** и **pacman-contrib**.
@@ -21,3 +31,10 @@ Usage: arch-update-checker [FLAG]
  -h            показать справку
  -v            показать номер версии программы
 ```
+### Как установить
+
+Клонировать репозиторий, установить через `install.sh`
+
+**ИЛИ**
+
+Скачать ./archpkg/PKGBUILD и установить как пакет с помощью `makepkg -si`
