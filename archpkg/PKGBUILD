@@ -1,0 +1,23 @@
+_pkgname="arch-update-checker"
+pkgname="$_pkgname-git"
+pkgver=0.5.3.3
+pkgrel=1
+pkgdesc='Updates notifications for Archlinux'
+arch=(any)
+url='https://github.com/IlyaGotoh/arch-update-checker'
+license=(GPL-3.0-only)
+depends=(
+  libnotify
+  pacman-contrib
+  wget
+)
+optdepends=(
+  'aurutils: check updates from AUR'
+)
+source=("https://raw.githubusercontent.com/IlyaGotoh/$_pkgname/refs/heads/main/$_pkgname")
+sha256sums=('0b6b1d9e9609f7e01c2e2ef45fd09edccfe02b84258712c16cc9936c966944da')
+
+package() {
+install -Dm755 arch-update-checker "${pkgdir}/usr/local/bin/arch-update-checker"
+}
+
