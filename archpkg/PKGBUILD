@@ -15,7 +15,7 @@ optdepends=(
   'aurutils: check updates from AUR'
 )
 source=("https://raw.githubusercontent.com/IlyaGotoh/$_pkgname/refs/heads/main/$_pkgname")
-sha256sums=('0b6b1d9e9609f7e01c2e2ef45fd09edccfe02b84258712c16cc9936c966944da')
+sha256sums=('63a6190e1b4163cb0e63eee176ef5d688fda59b36bb2b903129c38236913e637')
 
 package() {
 install -Dm755 arch-update-checker "${pkgdir}/usr/local/bin/arch-update-checker"

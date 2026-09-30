@@ -33,33 +33,39 @@ NO_CONNECTION_TEST=false
 NO_NOTIFY=false
 INFO_FLAG=false
 
+export ARCH_UPD_CHK_FD=1
+
+send_notif() {
+	ARCH_UPD_CHK_FD=`notify-send -p -r $ARCH_UPD_CHK_FD "$@" 2>/dev/null`
+}
+
 test_inet() {
         wget -q --spider $CONNECTION_TEST_URL
         if ! [[ "$?" == "0" ]]; then
 		echo "${SCRIPT_LANG[0]}: ${SCRIPT_LANG[1]}"
-		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -t 4000 -i $ERROR_ICON "${SCRIPT_LANG[0]}" "${SCRIPT_LANG[1]}"; fi
+		if [[ "$NO_NOTIFY" == "false" ]]; then send_notif -t 4000 -i $ERROR_ICON "${SCRIPT_LANG[0]}" "${SCRIPT_LANG[1]}"; fi
 		exit 1
         fi
 }
 
 notify_upd() {
 	if [[ "$LIST" == "" ]] && [[ "$LIST_AUR" == "" ]]; then
-		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -t 8000 -i $UPTODATE_ICON "${SCRIPT_LANG[4]}" "${SCRIPT_LANG[5]}"; fi
+		if [[ "$NO_NOTIFY" == "false" ]]; then send_notif -t 8000 -i $UPTODATE_ICON "${SCRIPT_LANG[4]}" "${SCRIPT_LANG[5]}"; fi
 	elif [[ "$LIST_AUR" == "" ]] && ! [[ "$LIST" == "" ]]; then
-		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -u critical -i $AVAILABLE_ICON "${SCRIPT_LANG[2]}: $UPD_COUNT" "$LIST"; fi
+		if [[ "$NO_NOTIFY" == "false" ]]; then send_notif -u critical -i $AVAILABLE_ICON "${SCRIPT_LANG[2]}: $UPD_COUNT" "$LIST"; fi
 	elif [[ "$LIST" == "" ]] && ! [[ "$LIST_AUR" == "" ]]; then
-		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -u critical -i $AVAILABLE_ICON "${SCRIPT_LANG[3]}: $UPD_COUNT_AUR" "$LIST_AUR"; fi
+		if [[ "$NO_NOTIFY" == "false" ]]; then send_notif -u critical -i $AVAILABLE_ICON "${SCRIPT_LANG[3]}: $UPD_COUNT_AUR" "$LIST_AUR"; fi
 	else
-		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -u critical -i $AVAILABLE_ICON "${SCRIPT_LANG[2]}: $UPD_COUNT" "$LIST\n\n${SCRIPT_LANG[3]}: $UPD_COUNT_AUR\n$LIST_AUR"; fi 
+		if [[ "$NO_NOTIFY" == "false" ]]; then send_notif -u critical -i $AVAILABLE_ICON "${SCRIPT_LANG[2]}: $UPD_COUNT" "$LIST\n\n${SCRIPT_LANG[3]}: $UPD_COUNT_AUR\n$LIST_AUR"; fi 
 	fi
 }
 
 check_upd() {
-	if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -w -t 3000 -i $CHECKING_ICON "${SCRIPT_LANG[6]}..." 2> /dev/null; fi
+	if [[ "$NO_NOTIFY" == "false" ]]; then send_notif -t 4000 -i $CHECKING_ICON "${SCRIPT_LANG[6]}..." 2> /dev/null; fi
 	LIST="$(checkupdates --nocolor)"
 	if  [[ "$?" == "1" ]]; then # checkupdates returns code 2 when no updates available
 		echo "${SCRIPT_LANG[0]}"
-                if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -t 8000 -i $ERROR_ICON "${SCRIPT_LANG[0]}" "${SCRIPT_LANG[9]}"; fi
+                if [[ "$NO_NOTIFY" == "false" ]]; then send_notif -t 8000 -i $ERROR_ICON "${SCRIPT_LANG[0]}" "${SCRIPT_LANG[9]}"; fi
                 exit 1
         fi
 	LIST_AUR="$(pacman -Qm | aur vercmp)"
@@ -75,7 +81,7 @@ check_upd() {
 		notify_upd
 	else
 		echo "${SCRIPT_LANG[0]}"
-		if [[ "$NO_NOTIFY" == "false" ]]; then notify-send -t 8000 -i $ERROR_ICON "${SCRIPT_LANG[0]}" "${SCRIPT_LANG[9]}"; fi
+		if [[ "$NO_NOTIFY" == "false" ]]; then send_notif -t 8000 -i $ERROR_ICON "${SCRIPT_LANG[0]}" "${SCRIPT_LANG[9]}"; fi
 		exit 1
 	fi
 }
