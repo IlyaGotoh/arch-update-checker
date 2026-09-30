@@ -1,6 +1,6 @@
 _pkgname="arch-update-checker"
 pkgname="$_pkgname-git"
-pkgver=0.5.3.3
+pkgver=0.5.4
 pkgrel=1
 pkgdesc='Updates notifications for Archlinux'
 arch=(any)
@@ -15,7 +15,7 @@ optdepends=(
   'aurutils: check updates from AUR'
 )
 source=("https://raw.githubusercontent.com/IlyaGotoh/$_pkgname/refs/heads/main/$_pkgname")
-sha256sums=('63a6190e1b4163cb0e63eee176ef5d688fda59b36bb2b903129c38236913e637')
+sha256sums=('5efb381111419624f4e1833795b00838e8b46e9008695fdfa6956f992207efe6')
 
 package() {
 install -Dm755 arch-update-checker "${pkgdir}/usr/local/bin/arch-update-checker"
