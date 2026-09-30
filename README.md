@@ -17,7 +17,7 @@ Clone repo, install with `install.sh`
 
 **OR**
 
-Get ./archpkg/PKGBUILD, install as package with `makepkg -si`
+Download archpkg/PKGBUILD, install as package with `makepkg -si`
 
 ------------------------------------------------------------------------------------------------------------------------------
 
@@ -37,4 +37,4 @@ Get ./archpkg/PKGBUILD, install as package with `makepkg -si`
 
 **ИЛИ**
 
-Скачать ./archpkg/PKGBUILD и установить как пакет с помощью `makepkg -si`
+Скачать archpkg/PKGBUILD и установить как пакет с помощью `makepkg -si`
